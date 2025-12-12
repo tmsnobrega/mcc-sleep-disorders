@@ -257,7 +257,7 @@ uv run uvicorn src.app:app --host 0.0.0.0 --port 8000
 - Provide a public service URL 
 
 The deployed service is available at:
-⚠️ FUTURE: 👉 [link-here](https://online-shopper-intention-fastapi.onrender.com/docs)
+👉 [https://mcc-sleep-disorders.onrender.com/docs](https://mcc-sleep-disorders.onrender.com/docs)
 
 ### Using the API
 
