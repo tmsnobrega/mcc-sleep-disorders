@@ -170,14 +170,8 @@ This option is useful for development, debugging, or inspection of the API.
 
 #### Prerequisites
 
-- **Python 3.10+**  
+- **Python 3.13**  
 - **uv** (Python package manager)
-
-Install **uv** if needed:
-
-```
-pip install uv
-```
 
 #### Sync Dependencies
 
@@ -209,7 +203,7 @@ http://localhost:8000/docs
 
 #### Build the Image
 
-From the project root:
+With Docker running, from the project root:
 
 ```
 docker build -t sleep-disorder-classifier .
@@ -242,8 +236,8 @@ Ensure your repository contains:
 #### Create a Web Service on Render
 
 **1)** Go to the Render dashboard  
-**2)** Click **New → Web Service**  
-**3)** Select the GitHub repository  
+**2)** Click **Add New → Web Service**  
+**3)** Select the GitHub repository => mcc-sleep-disorders
 **4)** Choose **Docker** as the runtime  
 
 #### Render Configuration
