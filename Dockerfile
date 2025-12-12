@@ -1,34 +1,33 @@
-FROM python:3.13-slim
+# Base image
+FROM python:3.13-slim AS base
 
-# Prevent Python from writing .pyc files and buffering stdout
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Set working directory
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies needed by some ML libs
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    curl \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install uv
+# Install uv (package manager)
+FROM base AS uv_install
 RUN pip install --no-cache-dir uv
 
-# Copy dependency files first (for Docker layer caching)
-COPY pyproject.toml uv.lock ./
+# Application image
+FROM uv_install AS app
 
-# Install Python dependencies
-RUN uv sync --frozen
+WORKDIR /app
 
-# Copy project files
+# Copy project metadata
+COPY uv.lock pyproject.toml ./
+
+# Install dependencies using uv (fast, reproducible)
+RUN uv sync --no-dev --frozen
+
+# Copy application code
 COPY src ./src
 COPY models ./models
-COPY data ./data
 
 # Expose API port
 EXPOSE 8000
 
-# Start FastAPI app
+# Start FastAPI with uvicorn
 CMD ["uv", "run", "uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]
